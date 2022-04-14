@@ -1,0 +1,25 @@
+name: platformsh-django4
+services:
+    defaults:
+        type: 'python:3.9'
+        port: 8000
+        ssl: false
+        command: poetry run python manage.py runserver
+    postgres:
+        type: 'postgres:12'
+    cross:
+        type: 'postgres:12'
+        portforward: true
+tooling:
+    healthcheckdefaults:
+        service: defaults
+        cmd: psql -U postgres -c "\\l"
+    verifydefaultsdatabase:
+        service: defaults
+        cmd: psql -P pager=off -U postgres -c "\dt *.*"
+    crossconnect:
+        service: defaults
+        cmd: psql -P pager=off -h cross -U postgres -c "\dt *.*"
+plugins:
+    '@lando/python': ./../../
+    '@lando/postgres': ./../../

@@ -21,6 +21,9 @@ dependencies:
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
     database: "db:postgresql"
+    rediscache: "cacheredis:redis"
+    memcachedcache: "cachemc:memcached"
+    mysqldatabase: "dbmaria:mysql"
 
 # The configuration of app when it is exposed to the web.
 web:

@@ -10,7 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
+import sys
+import json
+import base64
 from pathlib import Path
+
+# @staticmethod
+def decode(variable):
+    """Decodes a Platform.sh environment variable.
+    Args:
+        variable (string):
+            Base64-encoded JSON (the content of an environment variable).
+    Returns:
+        An dict (if representing a JSON object), or a scalar type.
+    Raises:
+        JSON decoding error.
+    """
+
+    try:
+        if sys.version_info[1] > 5:
+            return json.loads(base64.b64decode(variable))
+        else:
+            return json.loads(base64.b64decode(variable).decode('utf-8'))
+    except json.decoder.JSONDecodeError:
+        print('Error decoding JSON, code %d', json.decoder.JSONDecodeError)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +49,11 @@ SECRET_KEY = 'django-insecure-7e3!)5+3j95hw+&#7e#$^yi9!ybj3od^17w7i#9(a+z5!nbob#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.platformsh.site',
+]
 
 # Application definition
 
@@ -116,8 +143,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# if os.getenv('PLATFORM_PROJECT_ENTROPY'):
+#     SECRET_KEY = os.getenv('PLATFORM_PROJECT_ENTROPY')
+# if os.getenv('PLATFORM_APP_DIR'):
+#     STATIC_ROOT = os.getenv('PLATFORM_APP_DIR')
+if os.getenv('PLATFORM_RELATIONSHIPS'):
+    db_settings = decode(os.getenv('PLATFORM_RELATIONSHIPS'))['database'][0]
+    print(db_settings)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': db_settings['path'],
+            'USER': db_settings['username'],
+            'PASSWORD': db_settings['password'],
+            'HOST': db_settings['hostname'],
+            'PORT': db_settings['port'],
+        },
+        'sqlite': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
