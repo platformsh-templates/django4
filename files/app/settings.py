@@ -85,30 +85,58 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+DATABASE_CONFIG_SQLITE = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 }
-if os.getenv('PLATFORM_RELATIONSHIPS'):
-    print("Using database service on Platform.sh environment.")
+DATABASES = {
+    'default': DATABASE_CONFIG_SQLITE
+}
+if os.getenv('DB_HOST_POSTGRES') or os.getenv('DB_HOST_MYSQL'):
+    print("Using database service from Platform.sh environment.")
+    if os.getenv('DB_HOST_POSTGRES'):
+        print("     * PostgreSQL")
+        DB_ENGINE = 'django.db.backends.postgresql'
+        DB_PASSWORD = env("DB_PW_POSTGRES")
+    # if os.getenv('DB_HOST_MYSQL'):
+    #     print("     * MariaDB/MySQL")
+    #     DB_ENGINE = 'django.db.backends.mysql'
+    #     DB_PASSWORD = ""
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env("DATABASE_NAME"),
-            'USER': env("DATABASE_USER"),
-            'PASSWORD': env("DATABASE_PASSWORD"),
-            'HOST': env("DATABASE_HOST"),
-            'PORT': env("DATABASE_PORT"),
+            'ENGINE': DB_ENGINE,
+            'NAME': env("DB_NAME_POSTGRES"),
+            'USER': env("DB_USER_POSTGRES"),
+            'PASSWORD': DB_PASSWORD,
+            'HOST': env("DB_HOST_POSTGRES"),
+            'PORT': env("DB_PORT_POSTGRES"),
         },
-        'sqlite': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+        'sqlite': DATABASE_CONFIG_SQLITE
     }
 else:
     print("Using local sqlite.")
+
+# Caching
+# https://docs.djangoproject.com/en/4.0/topics/cache/#django-s-cache-framework
+
+if os.getenv('CACHE_LOCATION_MEMCACHED') or os.getenv('CACHE_LOACTION_REDIS'):
+    print("Using caching service from Platform.sh environment.")
+    # if os.getenv('CACHE_LOCATION_MEMCACHED'):
+    #     print("     * Memcached")
+    #     CACHES = {
+    #         'default': {
+    #             'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+    #             'LOCATION': env("CACHE_LOCATION_MEMCACHED"),
+    #         }
+    #     }
+    if os.getenv('CACHE_LOACTION_REDIS'):
+        print("     * Redis")
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+                'LOCATION': env("CACHE_LOACTION_REDIS"),
+            }
+        }
 
 
 # Password validation

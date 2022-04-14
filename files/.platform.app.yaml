@@ -1,0 +1,116 @@
+name: 'django'
+
+type: 'python:3.9'
+
+variables:
+    env:
+        POETRY_VERSION: '1.1.13'
+        POETRY_VIRTUALENVS_IN_PROJECT: true
+        POETRY_VIRTUALENVS_CREATE: false
+
+# dependencies:
+#     python3:
+#        pipenv: '2022.4.8'
+
+hooks:
+    build: |
+        set -e
+        ##########################################
+        # USING POETRY
+        ##########################################
+        # Install poetry
+        ./install-poetry.sh
+        # Install dependencies.
+        poetry install
+        # Static.
+        poetry run python manage.py collectstatic
+        # ##########################################
+        # # USING PIPENV
+        # ##########################################
+        # # Install dependencies.
+        # pipenv install --system --deploy
+        # # Static.
+        # pipenv --three install
+    deploy: |
+        ##########################################
+        # USING POETRY
+        ##########################################
+        poetry run python manage.py makemigrations
+        poetry run python manage.py showmigrations
+        poetry run python manage.py migrate
+        # ##########################################
+        # # USING PIPENV
+        # ##########################################
+        # pipenv run python manage.py makemigrations
+        # pipenv run python manage.py showmigrations
+        # pipenv run python manage.py migrate
+
+web:
+    upstream:
+        socket_family: unix
+    commands:
+        # Note: 
+        # For all of the commands below, be sure to 
+        # replace `app` with the name of your own
+        # application if using as a reference.
+        ##############################################
+        # USING POETRY (with and without Blackfire.io)
+        ##############################################
+        # 1) ASGI: daphne
+        # start: "poetry run daphne app.asgi:application"
+        # start: "poetry run blackfire-python daphne app.asgi:application"
+        # 2) ASGI: uvicorn
+        # start: "poetry run gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b unix:$SOCKET app.wsgi:application"
+        # start: "poetry run blackfire-python gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b unix:$SOCKET app.wsgi:application"
+        # 3) ASGI: hypercorn
+        # start: "poetry run hypercorn app.asgi:application"
+        # start: "poetry run blackfire-python hypercorn app.asgi:application"
+        # 4) WSGI: gunicorn
+        start: "poetry run gunicorn -w 4 -b unix:$SOCKET app.wsgi:application"
+        # start: "poetry run blackfire-python gunicorn -w 4 -b unix:$SOCKET app.wsgi:application"
+        # ##############################################
+        # # USING PIPENV (with and without Blackfire.io)
+        # ##############################################
+        # 1) ASGI: daphne
+        # start: "pipenv run daphne app.asgi:application"
+        # start: "pipenv run blackfire-python daphne app.asgi:application"
+        # 2) ASGI: uvicorn
+        # start: "pipenv run gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b unix:$SOCKET app.wsgi:application"
+        # start: "pipenv run blackfire-python gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b unix:$SOCKET app.wsgi:application"
+        # 3) ASGI: hypercorn
+        # start: "pipenv run hypercorn app.asgi:application"
+        # start: "pipenv run blackfire-python hypercorn app.asgi:application"
+        # 4) WSGI: gunicorn
+        # start: "pipenv run gunicorn -w 4 -b unix:$SOCKET app.wsgi:application"
+        # start: "pipenv run blackfire-python gunicorn -w 4 -b unix:$SOCKET app.wsgi:application"
+
+    locations:
+        "/":
+            passthru: true
+        "/static":
+            root: "static"
+            expires: 1h
+            allow: true
+        
+relationships:
+    database: "db:postgresql"
+    rediscache: "cacheredis:redis"
+    memcachedcache: "cachemc:memcached"
+    mysqldatabase: "dbmaria:mysql"
+
+disk: 512
+
+mounts:
+    'logs':
+        source: local
+        source_path: logs
+
+
+
+
+# source:
+#   operations:
+#     auto-update:
+#       command: |
+#         curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
+    

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cleanup () {
+    platform clear-cache
     platform tunnel:close -y
     unset PLATFORM_RELATIONSHIPS
 }
@@ -18,12 +19,13 @@ poetry init --name=$PROJECT_NAME -n -q
 # Django and environment variables.
 poetry add -q Django django-environ
 # Server options.
-# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/daphne/
-# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/hypercorn/
-# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/uvicorn/
+# Straight server - python manage.py runserver / blackfire-python python manage.py runserver
+# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/daphne/ - blackfire-python daphne myproject.asgi:application
+# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/hypercorn/ - blackfire-python hypercorn myproject.asgi:application
+# https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/uvicorn/ - blackfire-python gunicorn myproject.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 poetry add -q uvicorn gunicorn daphne hypercorn
 # Database options.
-poetry add -q psycopg2 pymysql
+poetry add -q psycopg2 mysqlclient
 # Caching options. 
 poetry add -q pymemcache redis
 # Extras.
