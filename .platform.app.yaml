@@ -1,34 +1,58 @@
-# This file describes an application. You can have multiple applications
-# in the same project.
-#
-# See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
+##########################
+# Container configuration.
 
-# The name of this app. Must be unique within a project.
+#   The name of this app. Must be unique within a project.
 name: 'app'
 
-# The runtime the application uses.
-type: 'python:3.9'
+#   The runtime the application uses.
+type: 'python:3.10'
 
-# The build-time dependencies of the app.
+##########################
+# Builds and variables
+
+# The build-time dependencies of the app. Uncomment if using Pipenv.
 dependencies:
     python3:
-       pipenv: '2018.10.13'
+       pipenv: '2022.9.4'
 
-# The relationships of the application with services or other applications.
-#
-# The left-hand side is the name of the relationship as it will be exposed
-# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
-# side is in the form `<service name>:<endpoint name>`.
-relationships:
-    database: "db:postgresql"
+# Build-time visible variables. Uncomment if using Poetry.
+# variables:
+#     env:
+#         POETRY_VERSION: '1.1.14'
+#         POETRY_VIRTUALENVS_IN_PROJECT: true
+#         POETRY_VIRTUALENVS_CREATE: false
 
-# The configuration of app when it is exposed to the web.
+hooks:
+    build: |
+        set -eu
+
+        # Download the latest version of pip
+        python3.10 -m pip install --upgrade pip
+
+        # Using pip
+        # pip install -r requirements.txt
+
+        # Using pipenv - be sure to uncomment the dependencies.build.python3 block above
+        pipenv install --system --deploy
+
+        # Using Poetry - be sure to uncomment the variables.env block above
+        # export PIP_USER=false
+        # curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
+        # export PIP_USER=true
+        # poetry install
+
+        mkdir logs
+        python manage.py collectstatic
+        rm -rf logs
+    deploy: python manage.py migrate
+
+##########################
+# Web configuration
+
+# The configuration of the application when it is exposed to the web.
 web:
-    # Whether your app should speak to the webserver via TCP or Unix socket
-    # https://docs.platform.sh/configuration/app-containers.html#upstream
     upstream:
         socket_family: unix
-    # Commands are run once after deployment to start the application process.
     commands:
         start: "gunicorn -w 4 -b unix:$SOCKET myapp.wsgi:application"
     locations:
@@ -39,6 +63,20 @@ web:
             expires: 1h
             allow: true
 
+##########################
+# Services
+
+# The relationships of the application with services or other applications.
+#
+# The left-hand side is the name of the relationship as it will be exposed
+# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
+# side is in the form `<service name>:<endpoint name>`.
+relationships:
+    database: "dbb:postgresql"
+
+##########################
+# Data and mounts
+
 # The size of the persistent disk of the application (in MB).
 disk: 512
 
@@ -48,22 +86,11 @@ mounts:
         source: local
         source_path: logs
 
-# The hooks executed at various points in the lifecycle of the application.
-hooks:
-  # The build hook runs before the application is deployed, and is useful for
-  # assembling the codebase.
-  build: |
-    pipenv install --system --deploy
-
-    mkdir logs
-    python manage.py collectstatic
-    rm -rf logs
-  deploy: |
-    python manage.py migrate
+##########################
+# Internal maintenance
 
 source:
-  operations:
-    auto-update:
-      command: |
-        curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
-    
+    operations:
+        auto-update:
+            command: |
+              curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
