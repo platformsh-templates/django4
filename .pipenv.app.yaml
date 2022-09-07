@@ -11,7 +11,7 @@ type: 'python:3.10'
 # Builds and variables
 
 # The build-time dependencies of the app. Uncomment if using Pipenv.
-dependencies:
+# dependencies:
     python3:
         pipenv: '2022.9.4'
 
@@ -26,9 +26,9 @@ hooks:
         pipenv install --system --deploy
 
         # Collect static assets
-        # pipenv run python manage.py collectstatic
+        pipenv run python manage.py collectstatic
 
-    # deploy: pipenv run python manage.py migrate
+    deploy: pipenv run python manage.py migrate
 
 ##########################
 # Web configuration

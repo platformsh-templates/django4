@@ -12,10 +12,10 @@ Django is a Python-based web application framework with a built-in ORM.
 
 ## Features
 
-* Python 3.9
+* Python 3.10
 * PostgreSQL 12
 * Automatic TLS certificates
-* Pipfile-based build
+* Pip-based builds
 
 ## Customizations
 
@@ -24,6 +24,28 @@ The following files have been added to a basic Django configuration.  If using t
 * The `.platform.app.yaml`, `.platform/services.yaml`, and `.platform/routes.yaml` files have been added.  These provide Platform.sh-specific configuration and are present in all projects on Platform.sh.  You may customize them as you see fit.
 * An additional Pip library, [`platformshconfig`](https://github.com/platformsh/config-reader-python), has been added.  It provides convenience wrappers for accessing the Platform.sh environment variables.
 * A rudimentary `myapp` application is included for demonstration purposes.  In particular, the `settings.py` file is set up to configure Django to connect to the correct database, and run in Debug mode when not running the `master` branch.  You are free to change that configuration if you prefer.
+
+## Package managers
+
+By default, this template uses `pip` to manage dependencies.
+The `.platform.app.yaml` has been defined to download the latest version of `pip` into the container, then to use it to install dependencies during the build hook when the file system is writable.
+
+If, however, you would like to use another tool (pipenv or Poetry), alternate files have been provided to use them.
+The commands below simply rename those alternate files to the required application configuration file name: `.platform.app.yaml`.
+All of the steps below assume you have either cloned this repository from GitHub, or have created a project and cloned it locally via `platform get`.
+
+### Using pipenv
+
+```bash
+mv .platform.app.yaml .pip.app.yaml && cp .pipenv.app.yaml .platform.app.yaml
+```
+
+### Using Poetry
+
+```bash
+cp .platform.app.yaml .pip.app.yaml
+cp .poetry.app.yaml .platform.app.yaml
+```
 
 ## References
 
