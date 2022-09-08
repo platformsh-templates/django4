@@ -69,6 +69,9 @@ mounts:
     'logs':
         source: local
         source_path: logs
+    '.cache':
+        source: local
+        source_path: cache
     '.local/share/virtualenvs':
         source: local
         source_path: envs
