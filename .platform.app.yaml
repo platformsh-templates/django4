@@ -23,7 +23,7 @@ hooks:
         python3.10 -m pip install --upgrade pip
         
         # Setup the virtualenv
-        pipenv --three
+        # pipenv --three
 
         # Install dependencies
         pipenv install --deploy
