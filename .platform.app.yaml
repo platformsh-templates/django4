@@ -22,13 +22,16 @@ hooks:
         # Download the latest version of pip
         python3.10 -m pip install --upgrade pip
         
+        # Setup the virtualenv
+        pipenv --three
+
         # Install dependencies
-        pipenv install --system --deploy
+        pipenv install --deploy
 
         # Collect static assets
-        # pipenv run python manage.py collectstatic
+        pipenv run python manage.py collectstatic
 
-    # deploy: pipenv run python manage.py migrate
+    deploy: pipenv run python manage.py migrate
 
 ##########################
 # Web configuration
@@ -72,6 +75,6 @@ mounts:
     '.cache':
         source: local
         source_path: cache
-    '.local/share/virtualenvs':
-        source: local
-        source_path: envs
+    # '.local/share/virtualenvs':
+    #     source: local
+    #     source_path: envs
