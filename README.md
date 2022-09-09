@@ -40,6 +40,9 @@ If, however, you would like to use another tool (pipenv or Poetry), alternate ap
 
 To use a different build and package manager, comment out the pip configuration object, and uncomment either the pipenv or Poetry line that links to their individual configuration files.
 
+The presence of these variations is only meant to serve as a demo.
+If you are using this template as a guide for deploying your own project on Platform.sh, it's sufficient to create a `.platform.app.yaml` file at the root of your repository, and then copy the contents of one of the desired configuration files into it (rather than including an `applications.yaml` with `!include` keys).
+
 ## References
 
 * [Django](https://www.djangoproject.com/)
