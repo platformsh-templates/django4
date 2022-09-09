@@ -23,6 +23,8 @@ hooks:
         # Download the latest version of pip
         python3.10 -m pip install --upgrade pip
 
+        echo "Some change"
+
         # Install and configure Poetry
         #   NOTE: There is a matching export PATH=... in `.environment`, which allows the use of Poetry
         #     in the deploy hook, start command, and during SSH sessions. Make sure to include in your
