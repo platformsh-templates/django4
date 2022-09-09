@@ -1,17 +1,17 @@
 ##########################
 # Container configuration.
 
-#   The name of this app. Must be unique within a project.
+# The name of this app. Must be unique within a project.
 name: 'app'
 
-#   The runtime the application uses.
+# The runtime the application uses.
 type: 'python:3.10'
 
 ##########################
 # Builds and variables
 
 # The build-time dependencies of the app. Uncomment if using Pipenv.
-# dependencies:
+dependencies:
     python3:
         pipenv: '2022.9.4'
 
@@ -22,8 +22,11 @@ hooks:
         # Download the latest version of pip
         python3.10 -m pip install --upgrade pip
         
+        # Setup the virtualenv
+        # pipenv --three
+
         # Install dependencies
-        pipenv install --system --deploy
+        pipenv install --deploy
 
         # Collect static assets
         pipenv run python manage.py collectstatic
@@ -69,3 +72,6 @@ mounts:
     'logs':
         source: local
         source_path: logs
+    '.cache':
+        source: local
+        source_path: cache
