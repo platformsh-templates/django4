@@ -33,12 +33,12 @@ If, however, you would like to use another tool (pipenv or Poetry), alternate ap
 `applications.yaml` contains configuration for three applications in an array:
 
 ```yaml
-- 'pip configuration (default)'
-- # 'pipenv configuration (commented out)'
-- # 'Poetry configuration (commented out)'
+- !include pip.app.yaml
+# - !include pipenv.app.yaml
+# - !include poetry.app.yaml
 ```
 
-To use a different build and package manager, comment out the pip configuration object, and uncomment either pipenv or Poetry.
+To use a different build and package manager, comment out the pip configuration object, and uncomment either the pipenv or Poetry line that links to their individual configuration files.
 
 ## References
 
