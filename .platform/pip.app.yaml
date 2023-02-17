@@ -74,4 +74,22 @@ source:
     operations:
         auto-update:
             command: |
-              curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
+                # Upgrade pip
+                python3.10 -m pip install --upgrade pip
+
+                # Upgrade Poetry.
+                ./install-poetry.sh
+                export PATH="/app/.local/bin:$PATH"
+                poetry update --lock
+
+                # Upgrade pip
+                poetry export -f requirements.txt > requirements.hash.txt
+              
+                # Upgrade Pipenv.
+                pip install pipenv
+                pipenv update
+
+                git add .
+                git commit --allow-empty -m "Dependency updates."
+
+            #   curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0

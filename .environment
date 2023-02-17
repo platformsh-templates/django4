@@ -1,4 +1,3 @@
 # Updates PATH when Poetry is used, making it available during deploys and SSH.
-if [ -n "$POETRY_VERSION" ]; then
-    export PATH="/app/.local/bin:$PATH"
-fi
+export POETRY_VERSION='1.1.14'
+export PATH="/app/.local/bin:$PATH"
