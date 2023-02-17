@@ -71,7 +71,6 @@ mounts:
 # Internal maintenance
 
 source:
-    root: .
     operations:
         auto-update:
             command: |
