@@ -74,7 +74,16 @@ source:
     operations:
         auto-update:
             command: |
-              pwd
-              ls -a 
-              pipenv update
-              curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
+                # Upgrade Poetry.
+                ./install-poetry.sh
+                export PATH="/app/.local/bin:$PATH"
+                poetry update --lock
+              
+                # Upgrade Pipenv.
+                pip install pipenv
+                pipenv update 
+
+                # Upgrade pip.
+                pipenv lock -r > requirements.txt
+
+            #   curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
