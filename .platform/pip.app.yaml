@@ -76,7 +76,7 @@ source:
             command: |
                 # Upgrade pip
                 python3.10 -m pip install --upgrade pip
-                
+
                 # Upgrade Poetry.
                 ./install-poetry.sh
                 export PATH="/app/.local/bin:$PATH"
@@ -87,6 +87,8 @@ source:
                 pipenv update 
 
                 # Upgrade pip.
+                pipenv lock -h 
+                pipenv lock --requirements > requirements.txt
                 pipenv lock -r > requirements.txt
 
             #   curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
