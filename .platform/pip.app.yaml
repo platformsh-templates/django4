@@ -81,14 +81,12 @@ source:
                 ./install-poetry.sh
                 export PATH="/app/.local/bin:$PATH"
                 poetry update --lock
+
+                # Upgrade pip
+                poetry export -f requirements.txt > requirements.hash.txt
               
                 # Upgrade Pipenv.
                 pip install pipenv
                 pipenv update 
-
-                # Upgrade pip.
-                pipenv lock -h 
-                pipenv lock --requirements > requirements.txt
-                pipenv lock -r > requirements.txt
 
             #   curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
