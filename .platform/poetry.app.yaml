@@ -15,27 +15,19 @@ type: 'python:3.10'
 # Build-time visible variables.
 variables:
     env:
-        POETRY_VERSION: '1.1.14'
         POETRY_VIRTUALENVS_IN_PROJECT: true
         POETRY_VIRTUALENVS_CREATE: false
 
 hooks:
     build: |
-        set -eu
+        set -e
 
-        # Download the latest version of pip
+        # Upgrade pip
         python3.10 -m pip install --upgrade pip
 
-        # Install and configure Poetry
-        #   NOTE: There is a matching export PATH=... in `.environment`, which allows the use of Poetry
-        #     in the deploy hook, start command, and during SSH sessions. Make sure to include in your
-        #     own projects.
-        export PIP_USER=false
-        curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
+        # Install dependencies with Poetry.
+        ./install-poetry.sh
         export PATH="/app/.local/bin:$PATH"
-        export PIP_USER=true
-
-        # Install dependencies
         poetry install
 
         # Collect static assets

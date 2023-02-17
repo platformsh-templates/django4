@@ -74,6 +74,9 @@ source:
     operations:
         auto-update:
             command: |
+                # Upgrade pip
+                python3.10 -m pip install --upgrade pip
+                
                 # Upgrade Poetry.
                 ./install-poetry.sh
                 export PATH="/app/.local/bin:$PATH"
