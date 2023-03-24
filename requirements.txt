@@ -82,6 +82,6 @@ psycopg2-binary==2.9.5; python_version >= "3.6" \
 sqlparse==0.4.3; python_version >= "3.8" \
     --hash=sha256:0323c0ec29cd52bceabc1b4d9d579e311f3e4961b98d174201d5622a23b85e34 \
     --hash=sha256:69ca804846bb114d2ec380e4360a8a340db83f0ccf3afceeb1404df028f57268
-tzdata==2022.7; sys_platform == "win32" and python_version >= "3.8" \
-    --hash=sha256:2b88858b0e3120792a3c0635c23daf36a7d7eeeca657c323da299d2094402a0d \
-    --hash=sha256:fe5f866eddd8b96e9fcba978f8e503c909b19ea7efda11e52e39494bad3a7bfa
+tzdata==2023.2; sys_platform == "win32" and python_version >= "3.8" \
+    --hash=sha256:905ae9e6744dd9ef5ce94d2aaa2dd00282fee38b670b2133407f23c388f110a1 \
+    --hash=sha256:c3b51b235b07f9f1889089c2264bcbeaaba260a63f89bea09e350ea4205eb95f
