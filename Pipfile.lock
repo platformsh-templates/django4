@@ -30,6 +30,7 @@
                 "sha256:860ae6a138a238fc4f22c99b52f3ead982bb4b1aad8c0122bcd8c8a3a02e409d"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.8'",
             "version": "==4.2.4"
         },
         "gunicorn": {
@@ -38,6 +39,7 @@
                 "sha256:88ec8bff1d634f98e61b9f65bc4bf3cd918a90806c6f5c48bc5603849ec81033"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.5'",
             "version": "==21.2.0"
         },
         "packaging": {
@@ -112,6 +114,7 @@
                 "sha256:fdca0511458d26cf39b827a663d7d87db6f32b93efc22442a742035728603d5f"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.6'",
             "version": "==2.9.7"
         },
         "sqlparse": {
