@@ -1,6 +1,6 @@
-asgiref==3.8.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:30fc07797ad71a0abb8fe34aa03c8043308a8389abc7942d797ea9911540bc28 \
-    --hash=sha256:ec75d9d0f04e2dbfedef1f20ee73a6594af80c333df47cdd31f37e6701f7c53a
+asgiref==3.8.1 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:3e1e3ecc849832fe52ccf2cb6686b7a55f82bb1d6aee72a58826471390335e47 \
+    --hash=sha256:c343bd80a0bec947a9860adb4c432ffa7db769836c64238fc34bdc3fec84d590
 django==4.2.11 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:6e6ff3db2d8dd0c986b4eec8554c8e4f919b5c1ff62a5b4390c17aff2ed6e5c4 \
     --hash=sha256:ddc24a0a8280a0430baa37aff11f28574720af05888c62b7cfe71d219f4599d3
