@@ -71,7 +71,7 @@ web:
 # More information: https://docs.platform.sh/create-apps/app-reference.html#dependencies
 dependencies:
   python3:
-    pipenv: '2022.9.4'
+    pipenv: '2024.0.1'
 
 # Hooks allow you to customize your code/environment as the project moves through the build and deploy stages
 # More information: https://docs.platform.sh/create-apps/app-reference.html#hooks
