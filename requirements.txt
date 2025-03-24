@@ -75,9 +75,9 @@ psycopg2-binary==2.9.10 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:f758ed67cab30b9a8d2833609513ce4d3bd027641673d4ebc9c067e4d208eec1 \
     --hash=sha256:f8157bed2f51db683f31306aa497311b560f2265998122abe1dce6428bd86567 \
     --hash=sha256:ffe8ed017e4ed70f68b7b371d84b7d4a790368db9203dfc2d222febd3a9c8863
-setuptools==77.0.3 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:583b361c8da8de57403743e756609670de6fb2345920e36dc5c2d914c319c945 \
-    --hash=sha256:67122e78221da5cf550ddd04cf8742c8fe12094483749a792d56cd669d6cf58c
+setuptools==78.0.1 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:1cc9b32ee94f93224d6c80193cbb768004667aa2f2732a473d6949b0236c1d4e \
+    --hash=sha256:4321d2dc2157b976dee03e1037c9f2bc5fea503c0c47d3c9458e0e8e49e659ce
 sqlparse==0.5.3 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:09f67787f56a0b16ecdbde1bfc7f5d9c3371ca683cfeaa8e6ff60b4807ec9272 \
     --hash=sha256:cf2196ed3418f3ba5de6af7e82c694a9fbdbfecccdfc72e281548517081f16ca
