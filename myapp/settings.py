@@ -159,6 +159,9 @@ if (os.getenv('PLATFORM_APPLICATION_NAME') is not None):
         STATIC_ROOT = os.path.join(os.getenv('PLATFORM_APP_DIR'), 'static')
     if (os.getenv('PLATFORM_PROJECT_ENTROPY') is not None):
         SECRET_KEY = os.getenv('PLATFORM_PROJECT_ENTROPY')
+    if (os.getenv('PLATFORM_SMTP_HOST') is not None):
+        EMAIL_HOST = os.getenv("PLATFORM_SMTP_HOST")
+        EMAIL_PORT = 25
     # Database service configuration, post-build only.
     if (os.getenv('PLATFORM_ENVIRONMENT') is not None):
         platformRelationships = decode(os.getenv('PLATFORM_RELATIONSHIPS'))
